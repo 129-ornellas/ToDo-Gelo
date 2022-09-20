@@ -1,30 +1,65 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import HomeView from "../views/HomeView.vue";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import PublicLayout from '@/layouts/PublicLayout.vue'
+import PrivateLayout from '@/layouts/PrivateLayout.vue'
+import HomeView from '@/views/HomeView.vue'
+import TasksListView from '@/views/TasksListView.vue'
+import TasksUpdateView from '@/views/TasksUpdateView.vue'
+import TasksSummaryView from '@/views/TasksSummaryView.vue'
+import LoginView from '@/views/LoginView.vue'
+import CreateUserView from '@/views/CreateUserView.vue'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 const routes = [
   {
-    path: "/",
-    name: "home",
-    component: HomeView,
+    path: '/',
+    component: PublicLayout,
+    children: [
+      {
+        path: '',
+        name: 'home',
+        component: HomeView,
+      },
+      {
+        path: 'login',
+        name: 'login',
+        component: LoginView,
+      },
+      {
+        path: 'createuser',
+        name: 'createuser',
+        component: CreateUserView,
+      },
+    ],
   },
   {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+    path: '/tasks',
+    component: PrivateLayout,
+    children: [
+      {
+        path: 'summary',
+        name: 'taskSummary',
+        component: TasksSummaryView,
+      },
+      {
+        path: ':id',
+        name: 'taskUpdate',
+        component: TasksUpdateView,
+      },
+      {
+        path: '',
+        name: 'taskList',
+        component: TasksListView,
+      },
+    ],
   },
-];
+]
 
 const router = new VueRouter({
-  mode: "history",
+  mode: 'history',
   base: process.env.BASE_URL,
   routes,
-});
+})
 
-export default router;
+export default router
